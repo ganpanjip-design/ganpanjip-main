@@ -1,0 +1,31 @@
+/* 메인 콘텐츠 영역 스타일 */
+.main {
+  min-height: 80vh;
+  padding: 4rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 작품 카드를 감싸는 그리드 스타일 */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개씩 표시 */
+  gap: 1.5rem;
+  max-width: 900px;
+  width: 100%;
+}
+
+/* 화면 크기가 작아질 때를 위한 반응형 설정 */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr); /* 한 줄에 2개 */
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr; /* 한 줄에 1개 */
+  }
+}

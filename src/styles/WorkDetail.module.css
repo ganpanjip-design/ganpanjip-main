@@ -1,0 +1,107 @@
+/* src/styles/WorkDetail.module.css */
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.main {
+  padding: 2rem 0;
+}
+
+.header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 2rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.meta {
+  display: flex;
+  gap: 1rem;
+  color: #888;
+  margin-bottom: 1rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  background-color: #f0f0f0;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.9rem;
+}
+
+.content {
+  line-height: 1.8;
+}
+
+.description {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #eaeaea;
+  margin: 2rem 0;
+}
+
+/* --- 콘텐츠 블록 스타일 --- */
+.textBlock {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.gallery {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* DB의 layout 값에 따라 동적으로 적용될 클래스들 */
+.gallery_grid-1 {
+  grid-template-columns: 1fr;
+}
+.gallery_grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.gallery_grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.mediaItem img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.caption {
+  font-size: 0.9rem;
+  color: #888;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 600px) {
+  .gallery_grid-4 {
+    grid-template-columns: repeat(2, 1fr); /* 작은 화면에서는 4열을 2열로 변경 */
+  }
+}
