@@ -3,6 +3,8 @@ import styles from '../../styles/Admin.module.css';
 import { WorkData, ContentBlock, MediaItem } from '../../models/Work'; // Work 모델 import
 import ImageUploader from '../../components/admin/ImageUploader'; // ImageUploader 경로
 
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+
 // 미리 정의된 태그 리스트
 const PREDEFINED_TAGS = [
   'ALL', '2D', '3D', 'Line Drawing Animation', 'Branding', 'Music Video', 
@@ -88,15 +90,13 @@ export default function WorkFormPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      // 백엔드로 데이터 전송 로직 (추후 API 엔드포인트 생성 필요)
-      const response = await fetch('/api/works', {
+      const response = await fetch(`${API_URL}/works`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
       });
       if(response.ok) {
           alert('게시물이 성공적으로 등록되었습니다.');
-          // 폼 초기화 또는 페이지 이동
       } else {
           throw new Error('서버에서 오류가 발생했습니다.');
       }
@@ -198,3 +198,4 @@ export default function WorkFormPage() {
     </div>
   );
 }
+
