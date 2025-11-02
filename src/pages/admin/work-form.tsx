@@ -2,16 +2,9 @@ import { useState, FormEvent, ChangeEvent } from 'react';
 import styles from '../../styles/Admin.module.css';
 import { WorkData, ContentBlock, MediaItem } from '../../models/Work'; // Work 모델 import
 import ImageUploader from '../../components/admin/ImageUploader'; // ImageUploader 경로
+import { PREDEFINED_TAGS } from '../../constants/tags';
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL;
-
-// 미리 정의된 태그 리스트
-const PREDEFINED_TAGS = [
-  '2D', '3D', 'Line Drawing Animation', 'Branding', 'Music Video', 
-  'Content Planning', 'VR', 'Cinematic', 'Graphic Design', 'Midea Art', 
-  'SNS Contents', 'Character Modeling'
-];
-
 type GridLayout = 'grid-1'|'grid-2'|'grid-3'|'grid-4';
 const getLayoutCount = (layout: GridLayout): number => {
     switch (layout) {
