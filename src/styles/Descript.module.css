@@ -70,7 +70,7 @@
   gap: 0.75rem; /* 태그 사이의 간격 */
 }
 
-.tag {
+.tag, .member {
   display: inline-block;
   border: 1px solid #000;
   padding: 0.2rem 0.4rem;

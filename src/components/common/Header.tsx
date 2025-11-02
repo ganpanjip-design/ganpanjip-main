@@ -8,103 +8,109 @@ export default function Header() {
   const currentPath = router.pathname;
   const currentType = router.query.type;
 
-  // 활성 링크 스타일: 굵은 글씨체, 색상은 CSS 기본값 상속
   const activeLinkStyle: CSSProperties = {
     fontWeight: 'bold',
   };
 
-  // 비활성 링크 스타일: 회색
   const inactiveLinkStyle: CSSProperties = {
     color: '#9f9f9f',
   };
 
   return (
-    <header>
-      <nav>
-        {/* 1. 로고 이미지: 클릭하면 메인 페이지로 이동 */}
-        <Link href="/" className="logo-link">
-          <Image 
-            src="/images/logo.png" // public 폴더 기준 경로
-            alt="My Portfolio Logo" 
-            width={40} // 실제 로고 이미지의 너비
-            height={40} // 실제 로고 이미지의 높이
-            priority // 페이지에서 중요한 이미지임을 표시 (선택사항)
-          />
-        </Link>
+    <>
+      <header>
+        <nav>
+          {/* 1. 로고 이미지: 클릭하면 메인 페이지로 이동 */}
+          <Link href="/" className="logo-link">
+            <Image 
+              src="/images/logo.png" // public 폴더 기준 경로
+              alt="My Portfolio Logo" 
+              width={40} // 실제 로고 이미지의 너비
+              height={40} // 실제 로고 이미지의 높이
+              priority // 페이지에서 중요한 이미지임을 표시 (선택사항)
+            />
+          </Link>
 
-        {/* 2. 내비게이션 메뉴 */}
-        <ul className="nav-menu">
-          <li>
-            <Link 
-              href="/?type=work" 
-              style={currentPath === '/' && currentType === 'work' ? activeLinkStyle : inactiveLinkStyle}
-            >
-              Work
-            </Link>
-          </li>
-          <li>
-            <Link 
-              href="/?type=original" 
-              style={currentPath === '/' && currentType === 'original' ? activeLinkStyle : inactiveLinkStyle}
-            >
-              Original
-            </Link>
-          </li>
-          <li>
-            <Link 
-              href="/about" 
-              style={currentPath === '/about' ? activeLinkStyle : inactiveLinkStyle}
-            >
-              About
-            </Link>
-          </li>
-          <li>
-            <Link 
-              href="/contact" 
-              style={currentPath === '/contact' ? activeLinkStyle : inactiveLinkStyle}
-            >
-              Contact
-            </Link>
-          </li>
-        </ul>
-      </nav>
+          {/* 2. 내비게이션 메뉴 */}
+          <ul className="nav-menu">
+            <li>
+              <Link 
+                href="/?type=work" 
+                style={currentPath === '/' && currentType === 'work' ? activeLinkStyle : inactiveLinkStyle}
+              >
+                Work
+              </Link>
+            </li>
+            <li>
+              <Link 
+                href="/?type=original" 
+                style={currentPath === '/' && currentType === 'original' ? activeLinkStyle : inactiveLinkStyle}
+              >
+                Original
+              </Link>
+            </li>
+            <li>
+              <Link 
+                href="/about" 
+                style={currentPath === '/about' ? activeLinkStyle : inactiveLinkStyle}
+              >
+                About
+              </Link>
+            </li>
+            <li>
+              <Link 
+                href="/contact" 
+                style={currentPath === '/contact' ? activeLinkStyle : inactiveLinkStyle}
+              >
+                Contact
+              </Link>
+            </li>
+          </ul>
+        </nav>
 
-      {/* 3. 스타일: Flexbox를 사용한 레이아웃 */}
-      <style jsx>{`
-        header {
-          width: 100%;
-          padding: 1rem 2rem;
-          border-bottom: 1px solid #eaeaea;
-          background-color: white;
-        }
-        nav {
-          display: flex;
-          justify-content: space-between; /* 양쪽 끝으로 요소를 분배 */
-          align-items: center; /* 세로 중앙 정렬 */
-          max-width: 1200px;
-          margin: 0 auto;
-        }
-        .logo-link {
-          display: flex; /* Image 컴포넌트 정렬을 위해 추가 */
-          align-items: center;
-        }
-        .nav-menu {
-          display: flex;
-          gap: 2rem; /* 메뉴 아이템 사이의 간격 */
-          list-style: none; /* li의 기본 점 제거 */
-          margin: 0;
-          padding: 0;
-        }
-        .nav-menu a {
-          text-decoration: none;
-          color: #333; /* 기본/활성 색상 */
-          font-size: 1rem;
-          transition: color 0.2s;
-        }
-        .nav-menu a:hover {
-          color: #333;
-        }
-      `}</style>
-    </header>
+        {/* 3. 스타일: Flexbox를 사용한 레이아웃 */}
+        <style jsx>{`
+          header {
+            width: 100%;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #eaeaea;
+            background-color: white;
+            
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10; /* 다른 콘텐츠 위에 표시 */
+          }
+          nav {
+            display: flex;
+            justify-content: space-between; 
+            align-items: center; 
+            max-width: 1200px;
+            margin: 0 auto;
+          }
+          .logo-link {
+            display: flex; 
+            align-items: center;
+          }
+          .nav-menu {
+            display: flex;
+            gap: 2rem; 
+            list-style: none; 
+            margin: 0;
+            padding: 0;
+          }
+          .nav-menu a {
+            text-decoration: none;
+            color: #333; 
+            font-size: 1rem;
+            transition: color 0.2s;
+          }
+          .nav-menu a:hover {
+            color: #333;
+          }
+        `}</style>
+      </header>
+      <div style={{ height: '62px' }}></div> 
+    </>
   );
 }

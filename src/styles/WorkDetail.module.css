@@ -1,5 +1,3 @@
-/* src/styles/WorkDetail.module.css */
-
 .container {
   max-width: 900px;
   margin: 0 auto;
@@ -20,11 +18,14 @@
 }
 
 .mainVideoPlayer {
-  width: 100%;
+  width: 99%;
   height: auto;
   display: block;
-  border-radius: 8px;
   background-color: #000;
+  border: 0;
+}
+.mainVideoPlayer::-webkit-media-controls-enclosure {
+    display: none !important;
 }
 
 .header {
@@ -33,15 +34,15 @@
 }
 
 .subtitle {
+  text-decoration: underline solid 1.3px;
   font-size: 1.5rem;
   color: #000000;
-  margin-bottom: 0.5rem; /* 다른 메타 정보와의 간격 조정 */
 }
 
-.meta {
+.owner {
+  font-size: 1.3rem;
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .tags {

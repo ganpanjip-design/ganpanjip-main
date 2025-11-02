@@ -52,7 +52,7 @@ export default function AboutPage() {
           <h2 className={styles.sectionTitle}>Member</h2>
           <div className={styles.tagList}>
             {members.map(member => (
-              <span key={member.name} className={styles.tag}>
+              <span key={member.name} className={styles.member}>
                 {`${member.name} | ${member.role}`}
               </span>
             ))}

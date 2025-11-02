@@ -71,9 +71,10 @@ const WorkDetailPage: NextPage<Props> = ({ work: workData }) => {
                 <video
                     src={mainVideoUrl}
                     controls
-                    playsInline
-                    muted
-                    loop
+                    playsInline={true}
+                    autoPlay={true}
+                    muted={false}
+                    loop={false}
                     className={styles.mainVideoPlayer}
                 />
             </div>
@@ -81,7 +82,7 @@ const WorkDetailPage: NextPage<Props> = ({ work: workData }) => {
 
         <div className={styles.header}>
           {work.subtitle && <h2 className={styles.subtitle}>{work.subtitle}</h2>}
-          <div className={styles.meta}> {work.owner} </div>
+          <div className={styles.owner}> {work.owner} </div>
           <div className={styles.tags}>
             {work.tags.map(tag => <span key={tag} className={styles.tag}>#{tag}</span>)}
           </div>
