@@ -13,6 +13,15 @@ const PREDEFINED_TAGS = [
 ];
 
 type GridLayout = 'grid-1'|'grid-2'|'grid-3'|'grid-4';
+const getLayoutCount = (layout: GridLayout): number => {
+    switch (layout) {
+        case 'grid-1': return 1;
+        case 'grid-2': return 2;
+        case 'grid-3': return 3;
+        case 'grid-4': return 4;
+        default: return 1;
+    }
+};
 
 export default function WorkFormPage() {
   const [formData, setFormData] = useState<Omit<WorkData, 'id'> & { mainVideoUrl: string }>({
@@ -66,23 +75,42 @@ export default function WorkFormPage() {
     setFormData(prev => ({ ...prev, data: newData }));
   };
   
-  // 컨텐츠 블록 내 미디어 업로드 처리 함수
   const handleContentMediaUpload = (index: number, url: string) => {
     const block = formData.data[index];
+    
     if (block.type === 'image' || block.type === 'gif') {
         const newItem: MediaItem = { url, caption: '' };
-        const updatedBlock = { ...block, items: [...(block.items || []), newItem] };
+        const layoutCount = getLayoutCount(block.layout as GridLayout);
+        const currentItems = block.items || [];
+        
+        let updatedItems: MediaItem[] = [];
+
+        if (layoutCount === 1) {
+            // grid-1은 무조건 덮어쓰기
+            updatedItems = [newItem];
+        } else if (currentItems.length < layoutCount) {
+            // 설정된 그리드 개수보다 작으면 추가
+            updatedItems = [...currentItems, newItem];
+        } else {
+            // 그리드 개수를 초과하면 경고 후 마지막 아이템 덮어쓰기
+            alert(`이미 ${layoutCount}개의 미디어가 등록되었습니다. 기존 미디어를 덮어씁니다.`);
+            updatedItems = [...currentItems.slice(0, layoutCount - 1), newItem];
+        }
+
+        const updatedBlock = { ...block, items: updatedItems };
         updateContentBlock(index, updatedBlock);
     }
   };
 
   const handleLayoutChange = (index: number, layout: GridLayout) => {
       const block = formData.data[index];
-      const updatedBlock = { ...block, layout };
+      const layoutCount = getLayoutCount(layout);
+      const updatedItems = (block.items || []).slice(0, layoutCount);
+
+      const updatedBlock = { ...block, layout, items: updatedItems };
       updateContentBlock(index, updatedBlock);
   };
   
-  // 컨텐츠 블록 타입 변경 처리 함수
   const handleTypeChange = (index: number, type: ContentBlock['type']) => {
       const block = formData.data[index];
       const updatedBlock: ContentBlock = { 
@@ -94,7 +122,6 @@ export default function WorkFormPage() {
       updateContentBlock(index, updatedBlock);
   };
   
-  // 텍스트 블록 내용 변경 처리 함수
   const handleTextChange = (index: number, value: string) => {
       const block = formData.data[index];
       const updatedBlock = { ...block, text: value }; 
@@ -197,6 +224,7 @@ export default function WorkFormPage() {
             {formData.thumbnail && <img src={formData.thumbnail} alt="Thumbnail preview" className={styles.previewImage} />}
         </div>
 
+
         {/* 콘텐츠 블록 */}
         <div className={styles.contentBlocks}>
             <h2>콘텐츠 블록</h2>
@@ -233,12 +261,22 @@ export default function WorkFormPage() {
                                     <option value="grid-4">4개씩</option>
                                 </select>
                             </div>
+                            <p style={{fontSize: '0.9em', color: '#666', marginBottom: '10px'}}>
+                                현재 등록된 파일: {(block.items || []).length} / {getLayoutCount(block.layout as GridLayout)}개
+                                {(block.items || []).length === getLayoutCount(block.layout as GridLayout) && 
+                                    <span style={{color: 'green', marginLeft: '10px'}}> (가득 참)</span>
+                                }
+                            </p>
+
                             <div className={styles.formGroup}>
                                 <label>미디어 파일</label>
                                 <ImageUploader onUploadSuccess={(url) => handleContentMediaUpload(index, url)} />
                                 <div className={styles.previewContainer}>
                                     {block.items?.map((item, itemIndex) => (
-                                        <img key={itemIndex} src={item.url} alt={`Content media ${itemIndex}`} className={styles.previewImage} />
+                                        // itemIndex와 block.layout을 사용하여 레이아웃 결정 (CSS에서 처리되지만, 여기서도 확인 가능)
+                                        <div key={itemIndex} style={{ display: 'inline-block', width: 'auto', margin: '5px' }}>
+                                            <img src={item.url} alt={`Content media ${itemIndex}`} className={styles.previewImage} style={{ maxWidth: '100px', height: 'auto' }} />
+                                        </div>
                                     ))}
                                 </div>
                             </div>

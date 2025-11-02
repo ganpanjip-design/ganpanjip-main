@@ -31,8 +31,8 @@ const RenderContentBlock = ({ block }: { block: ContentBlock }) => {
               <Image
                 src={item.url}
                 alt={item.caption || `Work content ${index + 1}`}
-                width={400}
-                height={500}
+                width={800}
+                height={100} // 높이는 자동 조정되도록 설정
                 style={{ width: '100%', height: 'auto' }} // 반응형 스타일
               />
               {item.caption && <p className={styles.caption}>{item.caption}</p>}
@@ -84,14 +84,43 @@ const WorkDetailPage: NextPage<Props> = ({ work: workData }) => {
           {work.subtitle && <h2 className={styles.subtitle}>{work.subtitle}</h2>}
           <div className={styles.owner}> {work.owner} </div>
           <div className={styles.tags}>
-            {work.tags.map(tag => <span key={tag} className={styles.tag}>#{tag}</span>)}
+            {work.tags.map(tag => <span key={tag} className={styles.tag}>{tag}</span>)}
           </div>
         </div>
 
-        <article className={styles.content}>
-          {work.data.map((block, index) => (
-            <RenderContentBlock key={index} block={block} />
-          ))}
+<article className={styles.content}>
+          {work.data.map((block, index) => {
+            
+            // 이전 블록 레이아웃 확인 (index가 0보다 클 경우)
+            const previousBlock = index > 0 ? work.data[index - 1] : null;
+            let marginTopValue = '10px'; 
+            
+            if (index === 0) {
+              marginTopValue = '0px'; 
+            } else if (previousBlock && previousBlock.layout !== block.layout) {
+              // 이전 블록과 현재 블록의 레이아웃  다를시
+              marginTopValue = '20px'; 
+            } else {
+              // 이전 블록과 현재 블록의 레이아웃이 같을시
+              marginTopValue = '0';
+            }
+
+            if (block.type === 'text' && previousBlock && previousBlock.type !== 'text') {
+                 marginTopValue = '20px'; // 이미지/GIF 후 텍스트가 나오면 40px
+            } else if (block.type === 'text' && previousBlock && previousBlock.type === 'text') {
+                 marginTopValue = '0px';
+            }
+
+            const blockStyle: React.CSSProperties = {
+              marginTop: marginTopValue
+            };
+
+            return (
+              <div key={index} style={blockStyle}>
+                <RenderContentBlock block={block} />
+              </div>
+            );
+          })}
         </article>
       </main>
       <Footer />
