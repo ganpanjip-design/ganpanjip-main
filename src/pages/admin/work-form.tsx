@@ -25,6 +25,8 @@ export default function WorkFormPage() {
     owner: '',
     tags: [],
     thumbnail: '',
+    descriptionKo: '',
+    descriptionEn: '',
     mainVideoUrl: '', 
     data: [],
   });
@@ -158,7 +160,7 @@ export default function WorkFormPage() {
     <div className={styles.formContainer}>
       <form onSubmit={handleSubmit} className={styles.workForm}>
         <div className={styles.formGroup}>
-          <label>제목</label>
+          <label>제목: 썸네일 제목</label>
           <input type="text" name="title" value={formData.title} onChange={handleInputChange} required className={styles.input} />
         </div>
         
@@ -177,7 +179,7 @@ export default function WorkFormPage() {
         </div>
         
         <div className={styles.formGroup}>
-          <label>서브 제목</label>
+          <label>서브 제목: 게시물 클릭 시 보여짐</label>
           <input type="text" name="subtitle" value={formData.subtitle || ''} onChange={handleInputChange} className={styles.input} />
         </div>
         <div className={styles.formGroup}>
@@ -217,6 +219,14 @@ export default function WorkFormPage() {
             {formData.thumbnail && <img src={formData.thumbnail} alt="Thumbnail preview" className={styles.previewImage} />}
         </div>
 
+        <div className={styles.formGroup}>
+            <label>설명글 (Ko)</label>
+            <textarea name="descriptionKo" value={formData.descriptionKo || ''} onChange={handleInputChange} className={styles.textarea}></textarea>
+        </div>
+        <div className={styles.formGroup}>
+            <label>설명글 (En)</label>
+            <textarea name="descriptionEn" value={formData.descriptionEn || ''} onChange={handleInputChange} className={styles.textarea}></textarea>
+        </div>
 
         {/* 콘텐츠 블록 */}
         <div className={styles.contentBlocks}>

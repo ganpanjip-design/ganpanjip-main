@@ -22,6 +22,8 @@ export interface WorkData {
   owner: string; 
   tags: string[];
   thumbnail: string;
+  descriptionKo?: string;
+  descriptionEn?: string;
   mainVideoUrl?: string; // 메인 비디오 URL (optional로 선언하여 데이터가 없을 때도 오류 방지)
 
   data: ContentBlock[]; 
@@ -37,6 +39,8 @@ export class Work implements WorkData {
   owner: string;
   tags: string[];
   thumbnail: string;
+  descriptionKo?: string;
+  descriptionEn?: string;
   mainVideoUrl?: string;
   data: ContentBlock[];
 
@@ -49,6 +53,8 @@ export class Work implements WorkData {
     this.owner = data.owner;
     this.tags = data.tags;
     this.thumbnail = data.thumbnail;
+    this.descriptionKo = data.descriptionKo;
+    this.descriptionEn = data.descriptionEn;
     this.mainVideoUrl = (data as any).mainVideoUrl; // WorkData 인터페이스에는 포함되지만, WorkData에 직접 추가된 것으로 처리
     this.data = data.data;
   }

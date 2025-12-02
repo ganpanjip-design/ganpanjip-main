@@ -58,7 +58,7 @@ const WorkDetailPage: NextPage<Props> = ({ work: workData }) => {
       </div>
     );
   }
-
+  
   const work = new Work(workData);
   const mainVideoUrl = (workData as ExtendedWorkData).mainVideoUrl;
 
@@ -83,10 +83,24 @@ const WorkDetailPage: NextPage<Props> = ({ work: workData }) => {
         <div className={styles.header}>
           {work.subtitle && <h2 className={styles.subtitle}>{work.subtitle}</h2>}
           <div className={styles.owner}> {work.owner} </div>
-          <div className={styles.tags}>
-            {work.tags.map(tag => <span key={tag} className={styles.tag}>{tag}</span>)}
-          </div>
         </div>
+
+        {work.descriptionKo && (
+          <p className={styles.description} style={{ whiteSpace: 'pre-wrap' }}>
+            {work.descriptionKo} </p>
+          )}
+        {work.descriptionKo && work.descriptionEn && (
+            <div className={styles.divider}></div>
+        )}
+        {work.descriptionEn && (
+          <p className={styles.description} style={{ whiteSpace: 'pre-wrap' }}>
+            {work.descriptionEn} </p>
+          )}
+
+        <div className={styles.tags}>
+          {work.tags.map(tag => <span key={tag} className={styles.tag}>{tag}</span>)}
+        </div>
+          
 
 <article className={styles.content}>
           {work.data.map((block, index) => {

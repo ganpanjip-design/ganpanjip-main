@@ -8,14 +8,26 @@ import styles from '../styles/Home.module.css';
 import { useRouter } from 'next/router'; 
 import { PREDEFINED_TAGS } from '../constants/tags'; 
 import Link from 'next/link';
+import React, { useEffect } from 'react'; 
 
 interface Props {
   works: WorkData[];
 }
+const STORAGE_KEY = 'allWorksData'; 
 
 const HomePage: NextPage<Props> = ({ works: worksData }) => {
-  const router = useRouter(); // router 훅 사용
+  const router = useRouter(); 
   const { type, tag } = router.query;
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(worksData));
+        } catch (error) {
+          console.error("Failed to save works data to localStorage:", error);
+        }
+    }
+  }, [worksData]); 
+  
   const selectedTags = Array.isArray(tag) ? tag : (tag ? [tag] : []);
   
   // WorkData를 Work 클래스 인스턴스로 변환
@@ -33,40 +45,35 @@ const HomePage: NextPage<Props> = ({ works: worksData }) => {
             work.tags.includes(selectedTag)
         );
     }
+    
     return typeMatch && tagMatch;
   });
 
-  // 태그 클릭 시 URL 쿼리를 업데이트하는 함수
+  // 태그 토글 함수 
   const toggleTag = (targetTag: string) => {
-    // 현재 선택된 태그 목록을 복사
     let newTags = [...selectedTags];
     const currentTagIndex = newTags.indexOf(targetTag);
 
     if (currentTagIndex > -1) {
-      // 이미 선택된 태그면 제거 (토글 off)
       newTags.splice(currentTagIndex, 1);
     } else {
-      // 선택되지 않은 태그면 추가 (토글 on)
       newTags.push(targetTag);
     }
     
-    // 새로운 쿼리 객체 생성
     const newQuery = { ...router.query };
-    delete newQuery.tag; // 기존 tag 쿼리 삭제
+    delete newQuery.tag;
 
     if (newTags.length > 0) {
-        // 새로운 태그 목록 추가
         newQuery.tag = newTags;
     }
     
-    // 라우터 푸시로 URL 업데이트
     router.push({
       pathname: router.pathname,
       query: newQuery,
-    }, undefined, { shallow: true }); // shallow: true는 SSR을 다시 거치지 않고 URL만 변경하여 클라이언트 필터링 속도를 유지합니다.
+    }, undefined, { shallow: true });
   };
 
-  // 'All' 버튼 클릭
+  // 태그 초기화 함수 
   const clearTags = () => {
     const newQuery = { ...router.query };
     delete newQuery.tag;
@@ -76,7 +83,7 @@ const HomePage: NextPage<Props> = ({ works: worksData }) => {
       query: newQuery,
     }, undefined, { shallow: true });
   };
-
+  
   return (
     <div>
       <Header />
@@ -117,7 +124,7 @@ const HomePage: NextPage<Props> = ({ works: worksData }) => {
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
     const works = await getWorks(); 
-    const worksData = JSON.parse(JSON.stringify(works)); //JSON 변환
+    const worksData = JSON.parse(JSON.stringify(works)); 
 
     return {
       props: {
