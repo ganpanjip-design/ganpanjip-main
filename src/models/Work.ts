@@ -54,7 +54,8 @@ export class Work implements WorkData {
     this.thumbnail = data.thumbnail;
     this.descriptionKo = data.descriptionKo;
     this.descriptionEn = data.descriptionEn;
-    this.mainVideoUrl = (data as any).mainVideoUrl; // WorkData 인터페이스에는 포함되지만, WorkData에 직접 추가된 것으로 처리
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.mainVideoUrl = (data as any).mainVideoUrl;
     this.data = data.data;
   }
 

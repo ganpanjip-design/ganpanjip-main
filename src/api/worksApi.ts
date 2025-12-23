@@ -10,7 +10,7 @@ export const getWorks = async (): Promise<Work[]> => {
     throw new Error("NEXT_PUBLIC_BACKEND_API_URL is not defined in .env file");
   }
 
-  let url = `${API_URL}/works`; 
+  const url = `${API_URL}/works`; 
 
   const response = await fetch(url);
   if (!response.ok) {

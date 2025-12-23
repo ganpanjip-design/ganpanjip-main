@@ -53,7 +53,7 @@ const HomePage: NextPage<Props> = ({ works: worksData }) => {
 
   // 태그 토글 함수 
   const toggleTag = (targetTag: string) => {
-    let newTags = [...selectedTags];
+    const newTags = [...selectedTags];
     const currentTagIndex = newTags.indexOf(targetTag);
 
     if (currentTagIndex > -1) {
