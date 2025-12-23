@@ -16,6 +16,7 @@ interface Props {
   work: ExtendedWorkData | null;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const MediaItemComponent = ({ item, isVideo = false }: { item: any, isVideo?: boolean }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -91,6 +92,7 @@ const RenderContentBlock = ({ block }: { block: ContentBlock }) => {
 };
 
 const WorkDetailPage: NextPage<Props> = ({ work: workData }) => {
+  const [mainVideoLoaded, setMainVideoLoaded] = useState(false);
   if (!workData) {
     return (
       <div className={styles.container}>
@@ -105,8 +107,6 @@ const WorkDetailPage: NextPage<Props> = ({ work: workData }) => {
   
   const work = new Work(workData);
   const mainVideoUrl = (workData as ExtendedWorkData).mainVideoUrl;
-  
-  const [mainVideoLoaded, setMainVideoLoaded] = useState(false);
 
   return (
     <div className={styles.container}>
@@ -163,23 +163,21 @@ const WorkDetailPage: NextPage<Props> = ({ work: workData }) => {
             let marginTopValue = '10px'; 
             
             if (index === 0) {
-                  marginTopValue = '0px'; 
-                } else {
-                  // 이전 블록과 그리드 레이아웃이 다르면 20px 띄움
-                  if (previousBlock && previousBlock.layout !== block.layout) {
-                    marginTopValue = '20px'; 
-                  }
-                
-                  // 현재 블록: 텍스트, 이전 블록: 미디어면 20px 띄움
-                  if (block.type === 'text' && previousBlock && previousBlock.type !== 'text') {
-                       marginTopValue = '20px'; 
-                  }
-                
-                  // 이전 블록: 텍스트라면 무조건 여백 0
-                  if (previousBlock && previousBlock.type === 'text') {
-                       marginTopValue = '0px';
-                  }
-                }
+              marginTopValue = '0px'; 
+            } else if (previousBlock && previousBlock.layout !== block.layout) {
+              marginTopValue = '20px'; 
+            } else {
+              marginTopValue = '0';
+            }
+
+            if (block.type === 'text' && previousBlock && previousBlock.type !== 'text') {
+                 marginTopValue = '20px'; 
+            } else if (block.type === 'text' && previousBlock && previousBlock.type === 'text') {
+                 marginTopValue = '0px';
+            }
+            if (previousBlock && previousBlock.type === 'text') {
+                 marginTopValue = '0px';
+            }
 
             const blockStyle: React.CSSProperties = {
               marginTop: marginTopValue
