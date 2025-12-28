@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'ganpanjib-public-images.s3.ap-southeast-2.amazonaws.com',
+        hostname: 'ganpanjip-images.s3.ap-northeast-2.amazonaws.com',
         port: '',
         pathname: '/**', 
       },
