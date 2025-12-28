@@ -158,12 +158,26 @@ export default function WorkFormPage() {
   };
 
   const uploadFileToS3 = async (file: File): Promise<string> => {
-      const uploadData = new FormData();
-      uploadData.append('file', file);
-      const res = await axios.post(`${API_URL}/upload`, uploadData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-      });
-      return res.data.url;
+      try {
+          const res = await axios.get(`${API_URL}/works/presigned-url`, {
+              params: { filename: file.name }
+          });
+
+          const { presignedUrl, fileUrl } = res.data;
+
+          await axios.put(presignedUrl, file, {
+              headers: { 
+                  'Content-Type': file.type 
+              }
+          });
+
+          return fileUrl;
+
+      } catch (error) {
+          console.error('S3 Upload Error:', error);
+          alert('파일 업로드 중 오류가 발생했습니다.');
+          throw error;
+      }
   };
 
   const handleSubmit = async (e: FormEvent) => {
