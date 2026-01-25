@@ -126,8 +126,9 @@ const WorkDetailPage: NextPage<Props> = ({ work: workData }) => {
                     src={mainVideoUrl}
                     controls
                     playsInline={true}
-                    autoPlay={true}
-                    muted={true}
+                    autoPlay={false}
+                    preload="none"
+                    muted={false}
                     loop={true}
                     className={`${styles.mainVideoPlayer} ${mainVideoLoaded ? styles.loadedContent : ''}`}
                     style={{ opacity: mainVideoLoaded ? 1 : 0 }}
