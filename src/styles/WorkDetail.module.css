@@ -20,9 +20,9 @@
   display: block;
   border: 0;
 }
-.mainVideoPlayer::-webkit-media-controls-enclosure {
+/* .mainVideoPlayer::-webkit-media-controls-enclosure {
     display: none !important;
-}
+} 컨트롤러 보이기*/
 
 .header {
   margin-bottom: 2rem;
