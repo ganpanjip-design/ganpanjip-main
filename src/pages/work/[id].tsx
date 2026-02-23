@@ -123,16 +123,16 @@ const WorkDetailPage: NextPage<Props> = ({ work: workData }) => {
                 )}
                 
                 <video
-                    src={mainVideoUrl}
-                    controls
-                    playsInline={true}
-                    autoPlay={false}
-                    preload="none"
-                    muted={false}
-                    loop={true}
-                    className={`${styles.mainVideoPlayer} ${mainVideoLoaded ? styles.loadedContent : ''}`}
-                    style={{ opacity: mainVideoLoaded ? 1 : 0 }}
-                    onCanPlay={() => setMainVideoLoaded(true)}
+                src={mainVideoUrl}
+                controls
+                playsInline={true}
+                autoPlay={true} 
+                muted={true} 
+                preload="auto" 
+                loop={true}
+                className={`${styles.mainVideoPlayer} ${mainVideoLoaded ? styles.loadedContent : ''}`}
+                style={{ opacity: mainVideoLoaded ? 1 : 0 }}
+                onCanPlay={() => setMainVideoLoaded(true)}
                 />
             </div>
         )}
