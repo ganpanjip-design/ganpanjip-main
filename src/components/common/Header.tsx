@@ -65,10 +65,10 @@ export default function Header() {
           }
           nav {
             display: flex;
-            justify-content: space-between; 
+            justify-content: space-between;
             align-items: center; 
-            max-width: 1200px;
             margin: 0 auto;
+            max-width: 900px;
           }
           .logo-link {
             display: flex; 
