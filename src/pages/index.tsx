@@ -4,11 +4,11 @@ import { Work, WorkData } from '../models/Work';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import WorkCard from '../components/works/WorkCard';
-import styles from '../styles/Home.module.css';
 import { useRouter } from 'next/router'; 
 import { PREDEFINED_TAGS } from '../constants/tags'; 
-import Link from 'next/link';
 import React, { useEffect } from 'react'; 
+import { useState } from 'react';
+import styles from '../styles/Home.module.css';
 
 interface Props {
   works: WorkData[];
@@ -17,7 +17,10 @@ const STORAGE_KEY = 'allWorksData';
 
 const HomePage: NextPage<Props> = ({ works: worksData }) => {
   const router = useRouter(); 
-  const { type, tag } = router.query;
+  const { type = 'all', tag } = router.query;
+  const [isTypeOpen, setIsTypeOpen] = useState(false);
+  const [isTagOpen, setIsTagOpen] = useState(false);
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
         try {
@@ -28,17 +31,26 @@ const HomePage: NextPage<Props> = ({ works: worksData }) => {
     }
   }, [worksData]); 
   
+  const handleTypeChange = (newType: string) => {
+    const newQuery: any = { ...router.query, type: newType };
+    if (newType === 'all') delete newQuery.type;
+
+    router.push({
+      pathname: router.pathname,
+      query: newQuery,
+    }, undefined, { shallow: true });
+    setIsTypeOpen(false);
+  };
+
   const selectedTags = Array.isArray(tag) ? tag : (tag ? [tag] : []);
   
-  // WorkData를 Work 클래스 인스턴스로 변환
   const allWorks = worksData
-    .map(data => new Work(data))
+  .map(data => new Work(data))
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-  // 표시할 작품 필터링
   const filteredWorks = allWorks.filter(work => {
-    // workType 필터링
-    const typeMatch = (type !== 'work' && type !== 'original') || work.workType === type;
+    // Type 필터링
+    const typeMatch = type === 'all' || work.workType === type;
 
     // Tag 필터링
     let tagMatch = true;
@@ -46,14 +58,12 @@ const HomePage: NextPage<Props> = ({ works: worksData }) => {
         tagMatch = selectedTags.every(selectedTag => 
             work.tags.includes(selectedTag)
         );
-    }
-    
-    return typeMatch && tagMatch;
-  });
-
-  // 태그 토글 함수 
+      }
+      
+      return typeMatch && tagMatch;
+    });
+  const newTags = [...selectedTags];
   const toggleTag = (targetTag: string) => {
-    const newTags = [...selectedTags];
     const currentTagIndex = newTags.indexOf(targetTag);
 
     if (currentTagIndex > -1) {
@@ -64,15 +74,13 @@ const HomePage: NextPage<Props> = ({ works: worksData }) => {
     
     const newQuery = { ...router.query };
     delete newQuery.tag;
-
-    if (newTags.length > 0) {
-        newQuery.tag = newTags;
-    }
+    if (newTags.length > 0) newQuery.tag = newTags;
     
     router.push({
       pathname: router.pathname,
       query: newQuery,
     }, undefined, { shallow: true });
+    setIsTagOpen(false); 
   };
 
   // 태그 초기화 함수 
@@ -90,26 +98,61 @@ const HomePage: NextPage<Props> = ({ works: worksData }) => {
     <div>
       <Header />
       <main className={styles.main}>
-      <nav className={styles.tagNav}>
-        <button 
-          onClick={clearTags} 
-          className={`${styles.tagItem} ${selectedTags.length === 0 ? styles.tagActive : ''}`}
-        >
-          All
-        </button>
-        {PREDEFINED_TAGS.map(tag => {
-          const isActive = selectedTags.includes(tag);
-          return (
-            <button 
-              key={tag}
-              onClick={() => toggleTag(tag)}
-              className={`${styles.tagItem} ${isActive ? styles.tagActive : ''}`}
+        <div className={styles.navContainer}>
+          {/* Type 섹션 */}
+          <nav className={styles.typeNav}>
+            <h3 
+              className={styles.typeBtn} 
+              onClick={() => {
+                setIsTypeOpen(!isTypeOpen);
+                setIsTagOpen(false); 
+              }}
             >
-              {tag}
-            </button>
-          );
-        })}
-      </nav>
+              <span className={styles.capitalize}> Type: {type} </span>
+              <span className={styles.arrow}> {isTypeOpen ? '▴' : '▾'}</span>
+            </h3>
+            {isTypeOpen && (
+              <div className={styles.dropdownList}>
+                {['all', 'work', 'original'].map((t) => (
+                  <div key={t} onClick={() => handleTypeChange(t)} className={styles.dropdownItem}>
+                    {t.charAt(0).toUpperCase() + t.slice(1)}
+                  </div>
+                ))}
+              </div>
+            )}
+          </nav>
+
+          {/* Tag 섹션 */}
+          <nav className={styles.tagNav}>
+            <h3 
+              className={styles.tagBtn} 
+              onClick={() => {
+                setIsTagOpen(!isTagOpen);
+                setIsTypeOpen(false); 
+              }}
+            >
+              Tag {selectedTags.length > 0 ? `: ${selectedTags.join(', ')}` : ''}
+              <span className={styles.arrow}> {isTagOpen ? '▴' : '▾'}</span>
+            </h3>
+            {isTagOpen && (
+              <div className={styles.dropdownList}>
+                <button 
+                  onClick={() => { clearTags(); setIsTagOpen(false); }} 
+                  className={`${styles.dropdownItem} ${selectedTags.length === 0 ? styles.tagActive : ''}`}
+                > All </button>
+                {PREDEFINED_TAGS.map(tag => (
+                  <button 
+                    key={tag}
+                    onClick={() => toggleTag(tag)}
+                    className={`${styles.dropdownItem} ${selectedTags.includes(tag) ? styles.tagActive : ''}`}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            )}
+          </nav>
+          </div>
         <div className={styles.grid}>
           {filteredWorks.length > 0 ? (
             filteredWorks.map(work => <WorkCard key={work.id} work={work} />)
