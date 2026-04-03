@@ -1,6 +1,6 @@
 .relatedSection {
   margin: 50px auto;
-  padding: 0 20px;
+  padding: 0;
   max-width: 1200px;
 }
 
@@ -9,7 +9,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  padding: 0 10px; 
+  padding: 0; 
 }
 
 .title {
@@ -24,8 +24,7 @@
 }
 
 .sliderContainer {
-  position: relative;
-  overflow: hidden; 
+  display: flex;
 }
 
 .cardTrackWrapper {
@@ -39,9 +38,9 @@
 }
 
 .slideItem {
-  flex: 0 0 calc(100% / 3); 
-  padding: 0 10px; 
+  flex: 0 0 calc((100% / 3) + 10px); 
   box-sizing: border-box;
+  padding-right: 10px;
 }
 
 .arrow {

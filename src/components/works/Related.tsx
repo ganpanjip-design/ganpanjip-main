@@ -97,7 +97,7 @@ const RelatedProjects: React.FC<Props> = ({ currentWork }) => {
         <div className={styles.cardTrackWrapper}>
             <div 
             className={styles.cardTrack}
-            style={{ transform: `translateX(-${startIndex * (100 / CARDS_PER_VIEW)}%)` }}
+            style={{ transform: `translateX(calc(-${startIndex} * (100% / ${CARDS_PER_VIEW} + 10px)))` }}
             >
             {relatedWorks.map(work => (
                 <div key={work.id} className={styles.slideItem}>
