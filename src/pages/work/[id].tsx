@@ -32,7 +32,9 @@ const MediaItemComponent = ({ item, isVideo = false }: { item: any, isVideo?: bo
       {isVideo ? (
         <video
           src={item.url}
-          controls
+          autoPlay
+          muted
+          loop
           playsInline
           style={{ width: '100%', height: 'auto', display: isLoaded ? 'block' : 'none' }}
           className={isLoaded ? styles.loadedContent : ''}

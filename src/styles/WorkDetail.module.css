@@ -110,6 +110,10 @@
   border: 1px solid #00000093;
 }
 
+.mediaItem video::-webkit-media-controls {
+  display: none !important;
+}
+
 .caption {
   font-size: 0.9rem;
   color: #888;
