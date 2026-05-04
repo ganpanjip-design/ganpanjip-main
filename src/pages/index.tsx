@@ -9,6 +9,7 @@ import { PREDEFINED_TAGS } from '../constants/tags';
 import React, { useEffect } from 'react'; 
 import { useState } from 'react';
 import styles from '../styles/Home.module.css';
+import Head from 'next/head'
 
 interface Props {
   works: WorkData[];
@@ -97,6 +98,10 @@ const HomePage: NextPage<Props> = ({ works: worksData }) => {
   return (
     <div>
       <Header />
+      <Head>
+        <title>GANPANJIP</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <main className={styles.main}>
         <div className={styles.navContainer}>
           {/* Type 섹션 */}
