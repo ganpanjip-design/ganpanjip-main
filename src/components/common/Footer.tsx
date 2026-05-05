@@ -5,10 +5,10 @@ export default function Footer() {
 
       <style jsx>{`
         footer {
-          font-size: 0.875rem;
+          font-size: 0.5rem;
           text-align: center;
           padding: 20px;
-          margin-top: 40px;
+          margin-top: 20px;
         }
       `}</style>
     </footer>

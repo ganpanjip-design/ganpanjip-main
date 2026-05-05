@@ -1,6 +1,34 @@
+
+.main-wrapper {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+.container-left {
+  flex: 1.7; /* 왼쪽 너비 비율 */
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #eaeaea;
+}
+.container-right {
+  flex: 1; /* 오른쪽 너비 비율 */
+  display: flex;
+  flex-direction: column;
+}
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+
+  -ms-overflow-style: none; /* IE 및 Edge */
+  scrollbar-width: none;    /* Firefox */
+}
+
 .main {
+  margin: 0 4.5rem;
   min-height: 80vh;
-  padding: 4rem 0;
+  padding: 1rem 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,7 +38,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr); 
-  gap: 1.5rem;
+  gap: 0.5rem;
   max-width: 900px;
   width: 100%;
 }
@@ -40,7 +68,7 @@
   justify-content: space-between;
 
   border-bottom: 2px solid #000;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.1rem;
   padding-bottom: 2px;
 }
 

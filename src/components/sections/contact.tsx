@@ -1,6 +1,5 @@
-import Header from '../components/common/Header';
-import Footer from '../components/common/Footer';
-import styles from '../styles/Descript.module.css';
+import Footer from '../common/Footer';
+import styles from '../../styles/Descript.module.css';
 
 // 이메일 링크 옆에 표시될 화살표 아이콘 컴포넌트
 const ArrowIcon = () => (
@@ -47,7 +46,6 @@ const contactInfo = [
 export default function ContactPage() {
   return (
     <div className={styles.pageContainer}>
-      <Header />
       <main className={styles.main}>
         <section className={styles.introSection}>
           <h1 className={styles.title}>Let&apos;s Talk</h1>
