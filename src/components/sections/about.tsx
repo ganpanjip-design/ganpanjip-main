@@ -3,9 +3,9 @@ import styles from '../../styles/Descript.module.css';
 
 export default function AboutPage() {
   const services = [
-    '3D / 2D Motion Graphics', 'Creative Direction & Storyboarding',
-    'Video Editing & Compositing', '3D Modeling', 'Branding & Logo Design',
-    'Digital Content, Print Design', 'Graphic Design'
+    '3D Modeling', 'Graphic Design','Branding & Logo Design', '3D / 2D Motion Graphics',  
+    'Digital Content, Print Design',
+    'Video Editing & Compositing', 'Creative Direction & Storyboarding'
   ];
 
   const members = [

@@ -1,6 +1,3 @@
-/* src/styles/About.module.css */
-/* src/styles/Contact.module.css */
-
 .pageContainer {
   display: flex;
   flex-direction: column;
@@ -110,4 +107,31 @@
 .contactValue p {
   margin: 0;
   white-space: pre-line;
+}
+
+@media (max-width: 768px) {
+  .main{
+    padding: 0;
+  }
+  .description,
+  .descriptionEn{
+    font-size: 0.8rem;
+  }
+  .tag, .member {
+  border: 2px solid #000;
+  font-size: 0.8rem;
+  }
+  .contactItem{
+    display: grid;
+    grid-template-rows: 2.5rem 1fr;
+    grid-template-columns: 1fr;
+    gap: 0rem;
+  }
+  .contactLabel {
+    font-size: 1.7rem;
+  }
+  .contactValue {
+    font-size: 0.8rem;
+    line-height: 1.1;
+  }
 }
