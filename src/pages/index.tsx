@@ -50,9 +50,16 @@ const HomePage: NextPage<Props> = ({ works: worksData }) => {
   };
 
   const selectedTags = Array.isArray(tag) ? tag : (tag ? [tag] : []); 
-  const allWorks = worksData.map(data => new Work(data)).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  const filteredWorks = allWorks.filter(work => (type === 'all' || work.workType === type) && (selectedTags.length === 0 || selectedTags.every(t => work.tags.includes(t)))); 
+  const filteredWorks = React.useMemo(() => {
+  const allWorks = worksData
+    .map(data => new Work(data))
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+  return allWorks.filter(work => 
+    (type === 'all' || work.workType === type) && 
+    (selectedTags.length === 0 || selectedTags.every(t => work.tags.includes(t)))
+  );
+}, [worksData, type, tag]);
   const toggleTag = (targetTag: string) => {
     const newTags = [...selectedTags];
     const idx = newTags.indexOf(targetTag);
