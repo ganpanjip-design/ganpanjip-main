@@ -1,7 +1,8 @@
 import { GetServerSideProps, NextPage } from 'next';
 import { getWorkById } from '../../api/worksApi';
 import { Work, WorkData, ContentBlock } from '../../models/Work';
-import Header from '../../components/common/Header';
+import LeftHeader from '../../components/common/LeftHeader'; 
+import WorkHeader from '../../components/common/WorkHeader';
 import Footer from '../../components/common/Footer';
 import Image from 'next/image';
 import styles from '../../styles/WorkDetail.module.css';
@@ -43,7 +44,7 @@ const MediaItemComponent = ({ item, isVideo = false }: { item: any, isVideo?: bo
       ) : (
         <Image
           src={item.url}
-          alt={item.caption || 'Media content'}
+          alt={'Media content'}
           width={800}
           height={100}
           style={{ 
@@ -56,8 +57,6 @@ const MediaItemComponent = ({ item, isVideo = false }: { item: any, isVideo?: bo
           onLoadingComplete={() => setIsLoaded(true)}
         />
       )}
-      
-      {isLoaded && item.caption && <p className={styles.caption}>{item.caption}</p>}
     </div>
   );
 };
@@ -98,11 +97,9 @@ const WorkDetailPage: NextPage<Props> = ({ work: workData }) => {
   if (!workData) {
     return (
       <div className={styles.container}>
-        <Header />
         <main className={styles.main}>
           <p>작품을 찾을 수 없습니다.</p>
         </main>
-        <Footer />
       </div>
     );
   }
@@ -111,17 +108,18 @@ const WorkDetailPage: NextPage<Props> = ({ work: workData }) => {
   const mainVideoUrl = (workData as ExtendedWorkData).mainVideoUrl;
 
   return (
-    <div className={styles.container}>
-      <Header />
+    <div className={styles['main-wrapper']}>
+    <section className={styles['container-left']}>
+    <LeftHeader />
+    <div className={styles['scroll-area']}>
       <main className={styles.main}>
-        
         {mainVideoUrl && (
             <div className={styles.mainVideoContainer}>
                 {!mainVideoLoaded && (
-                    <div className={styles.loadingOverlay}>
-                        <div className={styles.spinner}></div>
-                        <span>Loading Video...</span>
-                    </div>
+                  <div className={styles.loadingOverlay}>
+                    <div className={styles.spinner}></div>
+                    <span>Loading Video...</span>
+                  </div>
                 )}
                 
                 <video
@@ -138,28 +136,6 @@ const WorkDetailPage: NextPage<Props> = ({ work: workData }) => {
                 />
             </div>
         )}
-
-        <div className={styles.header}>
-          {work.subtitle && <h2 className={styles.subtitle}>{work.subtitle}</h2>}
-          <div className={styles.owner}> {work.owner} </div>
-        </div>
-
-        {work.descriptionKo && (
-          <p className={styles.description} style={{ whiteSpace: 'pre-wrap' }}>
-            {work.descriptionKo} </p>
-          )}
-        {work.descriptionKo && work.descriptionEn && (
-            <div className={styles.divider}></div>
-        )}
-        {work.descriptionEn && (
-          <p className={styles.description} style={{ whiteSpace: 'pre-wrap' }}>
-            {work.descriptionEn} </p>
-          )}
-
-        <div className={styles.tags}>
-          {work.tags.map(tag => <span key={tag} className={styles.tag}>{tag}</span>)}
-        </div>
-          
         <article className={styles.content}>
           {work.data.map((block, index) => {
             const previousBlock = index > 0 ? work.data[index - 1] : null;
@@ -172,20 +148,20 @@ const WorkDetailPage: NextPage<Props> = ({ work: workData }) => {
             } else {
               marginTopValue = '0';
             }
-
+            
             if (block.type === 'text' && previousBlock && previousBlock.type !== 'text') {
-                 marginTopValue = '20px'; 
+              marginTopValue = '20px'; 
             } else if (block.type === 'text' && previousBlock && previousBlock.type === 'text') {
-                 marginTopValue = '0px';
+              marginTopValue = '0px';
             }
             if (previousBlock && previousBlock.type === 'text') {
-                 marginTopValue = '0px';
+              marginTopValue = '0px';
             }
-
+            
             const blockStyle: React.CSSProperties = {
               marginTop: marginTopValue
             };
-
+            
             return (
               <div key={index} style={blockStyle}>
                 <RenderContentBlock block={block} />
@@ -194,8 +170,33 @@ const WorkDetailPage: NextPage<Props> = ({ work: workData }) => {
           })}
         </article>
       </main>
-      <RelatedProjects currentWork={work} /> 
+      </div>
+    </section>
+    <section className={styles['container-right']}>
+      <WorkHeader />
+      <div className={styles['scroll-area']}>
+      <div className={styles.header}>
+        {work.subtitle && <h2 className={styles.subtitle}>{work.subtitle}</h2>}
+        <div className={styles.info}> {work.owner} | {work.date.slice(0, 4)} </div>
+      </div>
+      {work.descriptionKo && (
+        <p className={styles.descriptionKo} style={{ whiteSpace: 'pre-wrap' }}>
+          {work.descriptionKo} </p>
+        )}
+      {work.descriptionKo && work.descriptionEn && (
+        <div className={styles.divider}></div>
+      )}
+      {work.descriptionEn && (
+        <p className={styles.descriptionEn} style={{ whiteSpace: 'pre-wrap' }}>
+          {work.descriptionEn} </p>
+        )}
+      <div className={styles.tags}>
+        {work.tags.map(tag => <span key={tag} className={styles.tag}>{tag}</span>)}
+      </div>
       <Footer />
+      </div>
+      </section>
+      {/* <RelatedProjects currentWork={work} />  */}
     </div>
   );
 };
