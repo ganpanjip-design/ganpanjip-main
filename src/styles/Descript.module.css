@@ -1,17 +1,13 @@
 .pageContainer {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 100px);
-  /* Pretendard 폰트 적용 */
+  min-height: calc(100vh - 173px);
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
 }
 
 .main {
   flex-grow: 1;
-  max-width: 900px;
-  width: 100%;
-  margin: 0;
-  padding: 0 0.5rem;
+  margin: 1.3rem;
 }
 
 .introSection {
@@ -19,12 +15,10 @@
 }
 
 .title {
-  font-size: 1.9rem;
-  font-weight: 400;
-  margin-bottom: 2rem;
+  font-size: 1.4rem;
+  margin-bottom: 0.8rem;
   text-decoration: underline;
   text-underline-offset: 5px; /* 텍스트와 밑줄 사이 간격 */
-  text-decoration-thickness: 2px;
 }
 
 .description,
@@ -63,7 +57,7 @@
 .tagList {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem; /* 태그 사이의 간격 */
+  gap: 0.5rem;
 }
 
 .tag, .member {
@@ -72,7 +66,7 @@
   padding: 0 0.2rem;
   font-size: 0.9rem;
   transition: background-color 0.2s, color 0.2s;
-  cursor: default; /* 클릭 기능이 없으므로 기본 커서 */
+  cursor: default; 
 }
 
 .tag:hover {
@@ -81,32 +75,44 @@
 }
 
 .contactItem {
-  display: grid;
-  grid-template-columns: 120px 1fr; /* 라벨과 내용 영역 분리 */
-  gap: 1.5rem;
-  margin-bottom: 1rem;
+  display: flex;
+  grid-template-columns: 120px 1fr;
+  margin-bottom: 1.5rem;
   align-items: start;
+  flex-direction: column;
 }
+
 .contactLabel {
   font-size: 1.1rem;
 }
+
 .contactValue {
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   line-height: 1.1;
+  display: flex;
+  flex-direction: row; 
+  flex-wrap: wrap;    
+  gap: 8px;          
+  align-items: center;
 }
-.contactValue a {
+
+.contactValue a,
+.contactValue p {
   color: #333;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-}
-.contactValue a:hover {
-  text-decoration: underline;
+  padding: 3px 6px;       
+  border: 1px solid #000;
+  border-radius: 5px;      
+  margin: 0;                
+  background-color: #fff;
+  white-space: nowrap;     
 }
 
-.contactValue p {
-  margin: 0;
-  white-space: pre-line;
+.contactValue a:hover {
+  text-decoration: underline;
+  background-color: #f9f9f9;
 }
 
 @media (max-width: 768px) {
