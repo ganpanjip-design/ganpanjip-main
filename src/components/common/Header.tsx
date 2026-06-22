@@ -1,97 +1,80 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { CSSProperties } from 'react';
 
-export default function Header() {
-  const router = useRouter();
-  const currentPath = router.pathname;
+interface Props {
+  onMenuClick?: () => void; // 모바일용 메뉴 토글 버튼 핸들러
+}
 
-  const activeLinkStyle: CSSProperties = {
-    fontWeight: 'bold',
-    color: '#333',
-  };
-
-  const inactiveLinkStyle: CSSProperties = {
-    color: '#9f9f9f',
-  };
-
+export default function Header({ onMenuClick }: Props) {
   return (
-    <>
-      <header>
-        <nav>
-          {/* 로고 */}
-          <Link href="/" className="logo-link">
-            <Image 
-              src="/images/logo.png"
-              alt="My Portfolio Logo" 
-              width={40} 
-              height={40} 
-              priority
-            />
-          </Link>
+    <header className="header">
+      <button className="mobile-menu-btn" onClick={onMenuClick}>
+        <Image 
+          src="/images/menu.png"
+          alt="Menu"
+          width={20}
+          height={20} 
+          priority
+        />
+      </button>
 
-          {/* 네비게이션 */}
-          <ul className="nav-menu">
-            <li>
-              <Link 
-                href="/about" 
-                style={currentPath === '/about' ? activeLinkStyle : inactiveLinkStyle}
-              >
-                About
-              </Link>
-            </li>
-            <li>
-              <Link 
-                href="/contact" 
-                style={currentPath === '/contact' ? activeLinkStyle : inactiveLinkStyle}
-              >
-                Contact
-              </Link>
-            </li>
-          </ul>
-        </nav>
+      <Link href="/" className="logo-link">
+        <div className="logo-box">
+          <Image src="/images/logo.png" alt="Logo" fill priority />
+        </div>
+      </Link>
+      <div className="placeholder" />
 
-        <style jsx>{`
-          header {
-            width: 100%;
-            padding: 1rem 2rem;
-            border-bottom: 1px solid #eaeaea;
-            background-color: white;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 10;
+      <style jsx>{`
+        .header {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 70px;
+          position: relative;
+          width: 100%;
+          border-bottom: 1px solid #000000;
+        }
+        
+        .logo-link {
+          display: flex;
+          align-items: center;
+        }
+        .logo-box {
+          position: relative; 
+          width: 45px;
+          height: 45px;
+        }
+        .mobile-menu-btn {
+          display: none;
+        }
+
+        .placeholder {
+          display: none;
+        }
+
+        @media (max-width: 768px) {
+          .header {
+            height: 70px;
+            border-bottom: 1px solid #f5f5f5;
           }
-          nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center; 
-            margin: 0 auto;
-            max-width: 900px;
-          }
-          .logo-link {
-            display: flex; 
-            align-items: center;
-          }
-          .nav-menu {
-            display: flex;
-            gap: 2rem; 
-            list-style: none; 
-            margin: 0;
+          .mobile-menu-btn {
+            position: absolute;
+            left: 0.5rem;
+            background: none;
+            cursor: pointer;
             padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            display: flex; 
           }
-          .nav-menu a {
-            text-decoration: none;
-            font-size: 1rem;
-            transition: color 0.2s;
+          .logo-box {
+            width: 32px;
+            height: 32px;
           }
-          .nav-menu a:hover {
-            color: #333;
-          }
-        `}</style>
-      </header>
-      <div style={{ height: '62px' }}></div> 
-    </>
+        }
+      `}</style>
+    </header>
   );
 }
