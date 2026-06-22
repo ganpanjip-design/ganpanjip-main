@@ -8,8 +8,9 @@ import { Work, WorkData } from '../models/Work';
 import { PREDEFINED_TAGS } from '../constants/tags';
 import WorkCard from '../components/works/WorkCard';
 
-import LeftHeader from '../components/common/LeftHeader'; 
+import Header from '../components/common/Header'; 
 import RightHeader from '../components/common/RightHeader';
+import Footer from '../components/common/Footer';
 import AboutPage from '../components/sections/about';
 import ContactPage from '../components/sections/contact';
 
@@ -70,47 +71,46 @@ const HomePage: NextPage<Props> = ({ works: worksData }) => {
   };
 
   return (
-    <div className={styles['main-wrapper']}>
+    <div>
       <Head>
         <title>GANPANJIP</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Header onMenuClick={() => setIsMenuOpen(true)} />
 
+      <div className={styles['main-wrapper']}>
       <section className={styles['container-left']}>
-        <LeftHeader onMenuClick={() => setIsMenuOpen(true)} />
+        <div className={styles.navContainer}>
+          <nav className={styles.typeNav}>
+          <h3 className={styles.typeBtn} onClick={() => { setIsTypeOpen(!isTypeOpen); setIsTagOpen(false); }}>
+            <span className={styles.capitalize}>Type: {type}</span>
+            <span className={styles.arrow}>{isTypeOpen ? '▴' : '▾'}</span>
+          </h3>
+          {isTypeOpen && (
+            <div className={styles.dropdownList}>
+              {['all', 'work', 'original'].map(t => (
+                <div key={t} onClick={() => handleTypeChange(t)} className={styles.dropdownItem}>{t.toUpperCase()}</div> 
+              ))}
+            </div>
+          )}
+          </nav>
+          <nav className={styles.tagNav}>
+          <h3 className={styles.tagBtn} onClick={() => { setIsTagOpen(!isTagOpen); setIsTypeOpen(false); }}>
+            Tag {selectedTags.length > 0 ? `: ${selectedTags.join(', ')}` : ''}
+            <span className={styles.arrow}>{isTagOpen ? '▴' : '▾'}</span>
+          </h3>
+          {isTagOpen && (
+            <div className={styles.dropdownList}>
+              <button onClick={() => { router.push('/', undefined, { shallow: true }); setIsTagOpen(false); }} className={styles.dropdownItem}>All</button> 
+              {PREDEFINED_TAGS.map(t => (
+                <button key={t} onClick={() => toggleTag(t)} className={`${styles.dropdownItem} ${selectedTags.includes(t) ? styles.tagActive : ''}`}>{t}</button> 
+              ))}
+            </div>
+          )}
+          </nav>
+        </div>
         <div className={styles['scroll-area']}>
           <main className={styles.main}>
-            <div className={styles.navContainer}>
-              <nav className={styles.typeNav}>
-                <h3 className={styles.typeBtn} onClick={() => { setIsTypeOpen(!isTypeOpen); setIsTagOpen(false); }}>
-                  <span className={styles.capitalize}>Type: {type}</span>
-                  <span className={styles.arrow}>{isTypeOpen ? '▴' : '▾'}</span>
-                </h3>
-                {isTypeOpen && (
-                  <div className={styles.dropdownList}>
-                    {['all', 'work', 'original'].map(t => (
-                      <div key={t} onClick={() => handleTypeChange(t)} className={styles.dropdownItem}>{t.toUpperCase()}</div> 
-                    ))}
-                  </div>
-                )}
-              </nav>
-
-              <nav className={styles.tagNav}>
-                <h3 className={styles.tagBtn} onClick={() => { setIsTagOpen(!isTagOpen); setIsTypeOpen(false); }}>
-                  Tag {selectedTags.length > 0 ? `: ${selectedTags.join(', ')}` : ''}
-                  <span className={styles.arrow}>{isTagOpen ? '▴' : '▾'}</span>
-                </h3>
-                {isTagOpen && (
-                  <div className={styles.dropdownList}>
-                    <button onClick={() => { router.push('/', undefined, { shallow: true }); setIsTagOpen(false); }} className={styles.dropdownItem}>All</button> 
-                    {PREDEFINED_TAGS.map(t => (
-                      <button key={t} onClick={() => toggleTag(t)} className={`${styles.dropdownItem} ${selectedTags.includes(t) ? styles.tagActive : ''}`}>{t}</button> 
-                    ))}
-                  </div>
-                )}
-              </nav>
-            </div>
-
             <div className={styles.grid}>
               {filteredWorks.map(work => <WorkCard key={work.id} work={work} />)}
             </div>
@@ -149,6 +149,8 @@ const HomePage: NextPage<Props> = ({ works: worksData }) => {
           </div>
         </div>
       </div>
+    </div>
+    <Footer />
     </div>
   );
 };
