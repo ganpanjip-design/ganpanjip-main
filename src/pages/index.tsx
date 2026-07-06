@@ -26,12 +26,11 @@ const HomePage: NextPage<Props> = ({ works: worksData }) => {
   const router = useRouter();
   const { type = 'all', tag } = router.query;
   
-  // 상태 관리: 필터 열림 여부, 우측 뷰, 그리고 모바일 전용 드로워 메뉴 열림 상태
   const [isTypeOpen, setIsTypeOpen] = useState(false);
   const [isTagOpen, setIsTagOpen] = useState(false);
   const [rightView, setRightView] = useState<'about' | 'contact'>('about');
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // 모바일 드로워 토글 상태
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false); 
+  const [searchQuery, setSearchQuery] = useState('');
   useEffect(() => {
     if (typeof window !== 'undefined') {
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(worksData)); } catch (e) {} 
@@ -58,9 +57,10 @@ const HomePage: NextPage<Props> = ({ works: worksData }) => {
 
   return allWorks.filter(work => 
     (type === 'all' || work.workType === type) && 
-    (selectedTags.length === 0 || selectedTags.every(t => work.tags.includes(t)))
+    (selectedTags.length === 0 || selectedTags.every(t => work.tags.includes(t))) &&
+    (searchQuery.trim() === '' || work.title.toLowerCase().includes(searchQuery.toLowerCase()))
   );
-}, [worksData, type, tag]);
+}, [worksData, type, tag, searchQuery]);
   const toggleTag = (targetTag: string) => {
     const newTags = [...selectedTags];
     const idx = newTags.indexOf(targetTag);
@@ -80,35 +80,54 @@ const HomePage: NextPage<Props> = ({ works: worksData }) => {
 
       <div className={styles['main-wrapper']}>
       <section className={styles['container-left']}>
-        <div className={styles.navContainer}>
-          <nav className={styles.typeNav}>
-          <h3 className={styles.typeBtn} onClick={() => { setIsTypeOpen(!isTypeOpen); setIsTagOpen(false); }}>
-            <span className={styles.capitalize}>Type: {type}</span>
-            <span className={styles.arrow}>{isTypeOpen ? '▴' : '▾'}</span>
-          </h3>
-          {isTypeOpen && (
-            <div className={styles.dropdownList}>
-              {['all', 'work', 'original'].map(t => (
-                <div key={t} onClick={() => handleTypeChange(t)} className={styles.dropdownItem}>{t.toUpperCase()}</div> 
-              ))}
-            </div>
-          )}
-          </nav>
-          <nav className={styles.tagNav}>
-          <h3 className={styles.tagBtn} onClick={() => { setIsTagOpen(!isTagOpen); setIsTypeOpen(false); }}>
-            Tag {selectedTags.length > 0 ? `: ${selectedTags.join(', ')}` : ''}
-            <span className={styles.arrow}>{isTagOpen ? '▴' : '▾'}</span>
-          </h3>
-          {isTagOpen && (
-            <div className={styles.dropdownList}>
-              <button onClick={() => { router.push('/', undefined, { shallow: true }); setIsTagOpen(false); }} className={styles.dropdownItem}>All</button> 
-              {PREDEFINED_TAGS.map(t => (
-                <button key={t} onClick={() => toggleTag(t)} className={`${styles.dropdownItem} ${selectedTags.includes(t) ? styles.tagActive : ''}`}>{t}</button> 
-              ))}
-            </div>
-          )}
-          </nav>
-        </div>
+<div className={styles.navContainer}>
+  {/* Type 영역 */}
+  <nav className={`${styles.navItem} ${styles.typeNav}`}>
+    <h3 className={styles.typeBtn} onClick={() => { setIsTypeOpen(!isTypeOpen); setIsTagOpen(false); }}>
+      <span className={styles.capitalize}>Type: {type}</span>
+      <span className={styles.arrow}>{isTypeOpen ? '▴' : '▾'}</span>
+    </h3>
+    {isTypeOpen && (
+      <div className={styles.dropdownList}>
+        {['all', 'work', 'original'].map(t => (
+          <div key={t} onClick={() => handleTypeChange(t)} className={`${styles.dropdownItem} ${
+              (t === 'all' && type === 'all') || type === t ? styles.itemActive : ''  }`} >
+            {t.toUpperCase()}
+          </div> 
+        ))}
+      </div>
+    )}
+  </nav>
+
+  {/* Tag 영역 */}
+  <nav className={`${styles.navItem} ${styles.tagNav}`}>
+    <h3 className={styles.tagBtn} onClick={() => { setIsTagOpen(!isTagOpen); setIsTypeOpen(false); }}>
+      Tag {selectedTags.length > 0 ? `: ${selectedTags.join(', ')}` : ''}
+      <span className={styles.arrow}>{isTagOpen ? '▴' : '▾'}</span>
+    </h3>
+    {isTagOpen && (
+      <div className={styles.dropdownList}>
+        <button onClick={() => { router.push('/', undefined, { shallow: true }); setIsTagOpen(false); }} 
+          className={`${styles.dropdownItem} ${selectedTags.length === 0 ? styles.itemActive : ''}`} >
+          All</button> 
+        {PREDEFINED_TAGS.map(t => (
+          <button key={t} onClick={() => toggleTag(t)} className={`${styles.dropdownItem} ${selectedTags.includes(t) ? styles.itemActive : ''}`} >
+            {t}</button> 
+        ))}
+      </div>
+    )}
+  </nav>
+  {/* Search 영역 */}
+  <nav className={`${styles.navItem} ${styles.searchNav}`}>
+  <input
+    type="text"
+    placeholder=" Search"
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    className={styles.searchInput} 
+  />
+  </nav>
+</div>
         <div className={styles['scroll-area']}>
           <main className={styles.main}>
             <div className={styles.grid}>
