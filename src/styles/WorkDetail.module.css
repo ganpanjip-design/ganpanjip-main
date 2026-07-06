@@ -191,12 +191,14 @@
     width: 100%; 
     border-right: none; 
     overflow: visible;
+    flex: none;
   }
   
   .container-right { 
     order: 2; 
     width: 100%;
     overflow: visible;
+    flex: none;
   }
   
   .scroll-area {

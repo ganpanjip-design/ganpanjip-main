@@ -8,7 +8,7 @@ interface Props {
 export default function Header({ onMenuClick }: Props) {
   return (
     <header className="header">
-      <button className="mobile-menu-btn" onClick={onMenuClick}>
+      {onMenuClick && (<button className="mobile-menu-btn" onClick={onMenuClick}>
         <Image 
           src="/images/menu.png"
           alt="Menu"
@@ -16,7 +16,7 @@ export default function Header({ onMenuClick }: Props) {
           height={20} 
           priority
         />
-      </button>
+      </button> )}
 
       <Link href="/" className="logo-link">
         <div className="logo-box">

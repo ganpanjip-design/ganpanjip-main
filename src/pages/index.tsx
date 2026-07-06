@@ -2,6 +2,7 @@ import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
+import Image from 'next/image';
 
 import { getWorks } from '../api/worksApi';
 import { Work, WorkData } from '../models/Work';
@@ -148,11 +149,8 @@ const HomePage: NextPage<Props> = ({ works: worksData }) => {
 
       <div className={`${styles['mobile-drawer']} ${isMenuOpen ? styles['is-open'] : ''}`}>
         <div className={styles['drawer-content']}>
-          <div className={styles['drawer-scroll']}>
-            {rightView === 'about' ? <AboutPage /> : <ContactPage />}
-          </div>
+            <div className={styles['drawer-header']}>
             <div className={styles['drawer-tabs']}>
-            <button className={styles['drawer-close-btn']} onClick={() => setIsMenuOpen(false)}>×</button>
             <span 
               className={rightView === 'about' ? styles['tab-active'] : styles['tab-inactive']}
               onClick={() => setRightView('about')}
@@ -165,6 +163,13 @@ const HomePage: NextPage<Props> = ({ works: worksData }) => {
             >
               Contact
             </span>
+            </div>
+            <button className={styles['backButton']} onClick={() => setIsMenuOpen(false)}>
+                <Image src="/images/backBTN.png" alt="Back" width={100}  height={100} />
+            </button>
+          </div>
+                    <div className={styles['drawer-scroll']}>
+            {rightView === 'about' ? <AboutPage /> : <ContactPage />}
           </div>
         </div>
       </div>
