@@ -76,6 +76,7 @@ const HomePage: NextPage<Props> = ({ works: worksData }) => {
       <Head>
         <title>GANPANJIP</title>
         <link rel="icon" href="/favicon.ico" />
+        <meta property="og:image" content="/logo.png" />
       </Head>
       <Header onMenuClick={() => setIsMenuOpen(true)} />
 
