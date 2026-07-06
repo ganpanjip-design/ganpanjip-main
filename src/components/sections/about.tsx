@@ -8,8 +8,10 @@ export default function AboutPage() {
   ];
 
   const members = [
-    { name: '박승원 Park Seung Won', role: 'Designer' },
-    { name: '유현지 Yu Hyeon Ji', role: 'Designer' }
+    { name: '유현지 Yu Hyeon Ji', role: 'CEO, Creative Director' },
+    { name: '박승원 Park Seung Won', role: 'CCO, Art Director' },
+    { name: '유시은 Lyu Si Eun', role: 'Co-Founder' }
+
   ];
 
   return (
